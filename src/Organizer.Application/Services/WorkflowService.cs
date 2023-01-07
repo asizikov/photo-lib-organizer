@@ -1,12 +1,13 @@
-﻿using Organizer.Domain.Entities;
+﻿using System.Diagnostics;
+using Organizer.Domain.Entities;
 using Organizer.Infrastructure.Persistence;
+using System.Threading.Channels;
 
 namespace Organizer.Application.Services;
 
 public class WorkflowService : IWorkflowService
 {
     private readonly IApplicationDbContext context;
-
     public WorkflowService(IApplicationDbContext context)
     {
         this.context = context;
@@ -20,17 +21,47 @@ public class WorkflowService : IWorkflowService
 
     private async Task StartReadingFilesAsync()
     {
-        foreach (var filePath in Directory.EnumerateFiles(@"D:\yadisk_photos_full_dump\YandexDisk\Фотокамера_copy"))
+        var channel = Channel.CreateBounded<string>(new BoundedChannelOptions(1000)
         {
-            Console.WriteLine(filePath);
-            context.PhotoFiles.Add(new PhotoFile
+            FullMode = BoundedChannelFullMode.Wait,
+            SingleWriter = true,
+            SingleReader = false
+        });
+        var writer = channel.Writer;
+        InitFileDataExtractors(channel);
+        var directory = @"/Users/asizikov/Downloads";
+        // var directory = @"D:\yadisk_photos_full_dump\YandexDisk\Фотокамера_copy";
+        foreach (var filePath in Directory.EnumerateFiles(directory))
+        {
+            await writer.WriteAsync(filePath);
+            // Console.WriteLine(filePath);
+            // context.PhotoFiles.Add(new PhotoFile
+            // {
+            //     Id = Guid.NewGuid(),
+            //     FileName = Path.GetFileName(filePath),
+            //     FileExtension = Path.GetExtension(filePath),
+            //     FilePath = filePath
+            // });
+            // await context.SaveChangesAsync(CancellationToken.None);
+        }
+        writer.Complete();
+    }
+
+    private async Task InitFileDataExtractors(Channel<string> channel)
+    {
+        for (var i = 0; i < 10; i++)
+        {
+            _ = Task.Factory.StartNew( async () =>
             {
-                Id = Guid.NewGuid(),
-                FileName = Path.GetFileName(filePath),
-                FileExtension = Path.GetExtension(filePath),
-                FilePath = filePath
+                var id = i;
+                while (await channel.Reader.WaitToReadAsync()) 
+                {
+                    if (channel.Reader.TryRead(out var filePath)) 
+                    {
+                        Console.WriteLine(id + "--" + filePath);
+                    }
+                }
             });
-            await context.SaveChangesAsync(CancellationToken.None);
         }
     }
 }
