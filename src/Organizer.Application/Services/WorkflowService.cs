@@ -2,16 +2,18 @@
 using Organizer.Domain.Entities;
 using Organizer.Infrastructure.Persistence;
 using System.Threading.Channels;
+using MediatR;
+using Organizer.Application.Commands;
 
 namespace Organizer.Application.Services;
 
 public class WorkflowService : IWorkflowService
 {
-    private readonly IApplicationDbContext context;
+    private readonly IMediator mediator;
 
-    public WorkflowService(IApplicationDbContext context)
+    public WorkflowService(IMediator mediator)
     {
-        this.context = context;
+        this.mediator = mediator;
     }
 
     public async Task RunAsync()
@@ -52,24 +54,18 @@ public class WorkflowService : IWorkflowService
                 Task.Factory.StartNew(async () =>
                 {
                     var taskId = Guid.NewGuid();
-                    Console.WriteLine($"Data Extractor {taskId} started");
+                    Console.WriteLine($"Data Extractor Thread {taskId} started");
                     var counter = 0L;
                     while (await channel.Reader.WaitToReadAsync())
                     {
                         if (channel.Reader.TryRead(out var filePath))
                         {
-                            context.PhotoFiles.Add(new PhotoFile
-                            {
-                                Id = Guid.NewGuid(),
-                                FileName = Path.GetFileName(filePath),
-                                FileExtension = Path.GetExtension(filePath),
-                                FilePath = filePath
-                            });
-                            await context.SaveChangesAsync(CancellationToken.None);
+                            await mediator.Send(new ExtractDataFromFileCommand { FilePath = filePath });
                             counter++;
                         }
                     }
-                    Console.WriteLine($"Data Extractor {taskId} finished, inserted {counter} records");
+
+                    Console.WriteLine($"Data Extractor Thread {taskId} finished, inserted {counter} records");
                 }));
         }
 

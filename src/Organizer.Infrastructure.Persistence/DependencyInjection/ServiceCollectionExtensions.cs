@@ -9,9 +9,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(@"Server=.\SQLEXPRESS;Database=photo-organizer-db;Trust Server Certificate=true;Trusted_Connection=True;MultipleActiveResultSets=true"));
-
-        services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-
+        
+        services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(ServiceLifetime.Transient);
         return services;
     }
 }

@@ -46,8 +46,8 @@ namespace Organizer.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FileSize")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long?>("FileSize")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("PhotoTaken")
                         .HasColumnType("datetime2");

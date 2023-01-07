@@ -19,7 +19,7 @@ namespace Organizer.Infrastructure.Persistence.Migrations
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileExtension = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileSize = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileSize = table.Column<long>(type: "bigint", nullable: true),
                     FileDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoTaken = table.Column<DateTime>(type: "datetime2", nullable: true),
                     FileCreated = table.Column<DateTime>(type: "datetime2", nullable: true)
