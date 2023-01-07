@@ -13,9 +13,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDomain();
         services.AddPersistence();
-        //services.AddInfrastructure();
-        
-        services.AddTransient<IWorkflowService, WorkflowService>();
+
         services.AddTransient<IFileDataExtractorService, FileDataExtractorService>();
         services.AddMediatR(Assembly.GetExecutingAssembly());
 

@@ -1,14 +1,30 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Organizer.Application.DependencyInjection;
 using Organizer.Application.Services;
 
-Console.WriteLine("Starting Photo Organizer");
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((builder =>
+    {
+        builder.Sources.Clear();
+        builder.SetBasePath(Directory.GetCurrentDirectory());
+        builder.AddJsonFile("appsettings.json", false, false);
+    }))
+    .ConfigureServices((_, services) =>
+    {
+        services.AddApplication();
+        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddHostedService<WorkflowService>();
+    })
+    .Build();
 
-var services = new ServiceCollection();
-services.AddApplication();
+var logger = host.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("Starting Photo Organizer");
 
-var serviceProvider = services.BuildServiceProvider();
-var workflowService = serviceProvider.GetRequiredService<IWorkflowService>();
-await workflowService.RunAsync();
+await host.RunAsync();
 
-Console.WriteLine("Finished Photo Organizer");
+logger.LogInformation("Finished Photo Organizer");

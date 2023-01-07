@@ -1,19 +1,22 @@
 ﻿using System.Globalization;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
+using Microsoft.Extensions.Logging;
 using Organizer.Domain.Entities;
 
 namespace Organizer.Application.Services;
 
 public class FileDataExtractorService : IFileDataExtractorService
 {
-    private readonly HashSet<string> KnownPhotoExtensions = new();
+    private readonly ILogger<FileDataExtractorService> logger;
+    private readonly HashSet<string> knownPhotoExtensions = new();
 
-    public FileDataExtractorService()
+    public FileDataExtractorService(ILogger<FileDataExtractorService> logger)
     {
-        KnownPhotoExtensions.Add(".jpg");
-        KnownPhotoExtensions.Add(".jpeg");
-        KnownPhotoExtensions.Add(".heic");
+        this.logger = logger;
+        knownPhotoExtensions.Add(".jpg");
+        knownPhotoExtensions.Add(".jpeg");
+        knownPhotoExtensions.Add(".heic");
     }
 
     public async Task<PhotoFile> ExtractFileDataAsync(string filePath, CancellationToken cancellationToken)
@@ -30,7 +33,7 @@ public class FileDataExtractorService : IFileDataExtractorService
             FileCreated = fileInfo.CreationTime,
         };
 
-        if (KnownPhotoExtensions.Contains(fileInfo.Extension.ToLower()))
+        if (knownPhotoExtensions.Contains(fileInfo.Extension.ToLower()))
         {
             // extract date from exif data
             try
@@ -43,7 +46,8 @@ public class FileDataExtractorService : IFileDataExtractorService
                 {
                     var dateDescription = exifSubIfdDirectory.GetDescription(ExifDirectoryBase.TagDateTimeOriginal);
 
-                    if (DateTime.TryParseExact(dateDescription, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
+                    if (DateTime.TryParseExact(dateDescription, "yyyy:MM:dd HH:mm:ss", CultureInfo.InvariantCulture,
+                            DateTimeStyles.None, out var date))
                     {
                         photoFileEntity.PhotoTaken = date;
                     }
@@ -51,7 +55,7 @@ public class FileDataExtractorService : IFileDataExtractorService
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message + "for file " + filePath);
+                logger.LogError(ex.Message, $"failed to extract metadata for file {filePath}");
             }
         }
 
