@@ -10,4 +10,5 @@ public class PhotoFile
     public string? FileDescription { get; set; }
     public DateTime? PhotoTaken { get; set; }
     public DateTime? FileCreated { get; set; }
+    public string? Hash { get; set; }
 }

@@ -26,7 +26,8 @@ namespace Organizer.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
 
                     b.Property<DateTime?>("FileCreated")
                         .HasColumnType("datetime2");
@@ -36,23 +37,34 @@ namespace Organizer.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("FileExtension")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<long?>("FileSize")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Hash")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("PhotoTaken")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("FilePath");
+
+                    b.HasIndex("Hash");
 
                     b.ToTable("PhotoFiles");
                 });

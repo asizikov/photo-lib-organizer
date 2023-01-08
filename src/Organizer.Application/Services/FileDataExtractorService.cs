@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Security.Cryptography;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,6 @@ public class FileDataExtractorService : IFileDataExtractorService
 
         var photoFileEntity = new PhotoFile
         {
-            Id = Guid.NewGuid(),
             FileName = Path.GetFileName(filePath),
             FileExtension = Path.GetExtension(filePath),
             FilePath = filePath,
@@ -55,10 +55,20 @@ public class FileDataExtractorService : IFileDataExtractorService
             }
             catch (Exception ex)
             {
-                logger.LogError(ex.Message, $"failed to extract metadata for file {filePath}");
+                logger.LogError(ex, "failed to extract metadata for file {FilePath}", filePath);
             }
         }
 
+        photoFileEntity.Hash = await CalculateFileHashAsync(fileInfo, cancellationToken);
+
         return photoFileEntity;
+    }
+
+    private async Task<string?> CalculateFileHashAsync(FileInfo fileInfo, CancellationToken cancellationToken)
+    {
+        await using var fileStream = fileInfo.OpenRead();
+        using var md5 = MD5.Create();
+        var hash = await md5.ComputeHashAsync(fileStream, cancellationToken);
+        return Convert.ToBase64String(hash);
     }
 }

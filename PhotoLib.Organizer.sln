@@ -8,6 +8,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organizer.Domain", "src\Org
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organizer.Infrastructure.Persistence", "src\Organizer.Infrastructure.Persistence\Organizer.Infrastructure.Persistence.csproj", "{7DC4750F-E398-4DAC-A92C-C363E2E82FB6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dbscripts", "dbscripts", "{AF3C157E-91B5-4EAC-BDC0-10C8DD8C611D}"
+	ProjectSection(SolutionItems) = preProject
+		dbscripts\find-duplicates.sql = dbscripts\find-duplicates.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -10,4 +10,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
     
     public DbSet<PhotoFile> PhotoFiles { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+    }
 }

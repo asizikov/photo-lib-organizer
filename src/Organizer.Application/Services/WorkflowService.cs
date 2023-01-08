@@ -38,8 +38,8 @@ public class WorkflowService : BackgroundService
         });
         var writer = channel.Writer;
         var extractorTasks = InitFileDataExtractors(channel, stoppingToken);
-        var directory = @"D:\yadisk_photos_full_dump\YandexDisk\Фотокамера_copy";
-        //var directory = @"D:\yadisk_photos\Photos and videos from Yandex.Disk";
+        //var directory = @"D:\yadisk_photos_full_dump\YandexDisk\Фотокамера_copy";
+        var directory = @"D:\yadisk_photos\Photos and videos from Yandex.Disk";
         
         var producerTask = Task.Run(() => ProducerTask(writer, directory, stoppingToken), stoppingToken);
 
