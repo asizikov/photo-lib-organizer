@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Organizer.Application.DependencyInjection;
 using Organizer.Application.Services;
 
+ThreadPool.SetMinThreads(100, 100);
+
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((builder =>
     {
@@ -14,10 +16,9 @@ var host = Host.CreateDefaultBuilder(args)
         builder.SetBasePath(Directory.GetCurrentDirectory());
         builder.AddJsonFile("appsettings.json", false, false);
     }))
-    .ConfigureServices((_, services) =>
+    .ConfigureServices((context, services) =>
     {
-        services.AddApplication();
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddApplication(context.Configuration);
         services.AddHostedService<WorkflowService>();
     })
     .Build();

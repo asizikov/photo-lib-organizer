@@ -3,7 +3,9 @@ using System.Threading.Channels;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Organizer.Application.Commands;
+using Organizer.Application.Configuration;
 
 namespace Organizer.Application.Services;
 
@@ -12,12 +14,15 @@ public class WorkflowService : BackgroundService
     private readonly IMediator mediator;
     private readonly ILogger<WorkflowService> logger;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
+    private readonly IOptions<OrganizerOptions> config;
 
-    public WorkflowService(IMediator mediator, ILogger<WorkflowService> logger, IHostApplicationLifetime hostApplicationLifetime)
+    public WorkflowService(IMediator mediator, ILogger<WorkflowService> logger,
+        IHostApplicationLifetime hostApplicationLifetime, IOptions<OrganizerOptions> config)
     {
         this.mediator = mediator;
         this.logger = logger;
         this.hostApplicationLifetime = hostApplicationLifetime;
+        this.config = config;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,7 +30,7 @@ public class WorkflowService : BackgroundService
         logger.LogInformation("WorkflowService.RunAsync");
         var stopwatch = Stopwatch.StartNew();
         await StartReadingFilesAsync(stoppingToken);
-        logger.LogInformation($"WorkflowService.RunAsync: {stopwatch.ElapsedMilliseconds} ms");
+        logger.LogInformation("WorkflowService.RunAsync: {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
     }
 
     private async Task StartReadingFilesAsync(CancellationToken stoppingToken)
@@ -38,9 +43,8 @@ public class WorkflowService : BackgroundService
         });
         var writer = channel.Writer;
         var extractorTasks = InitFileDataExtractors(channel, stoppingToken);
-        //var directory = @"D:\yadisk_photos_full_dump\YandexDisk\Фотокамера_copy";
-        var directory = @"D:\yadisk_photos\Photos and videos from Yandex.Disk";
-        
+        var directory = config.Value.DirectoryToProcess;
+
         var producerTask = Task.Run(() => ProducerTask(writer, directory, stoppingToken), stoppingToken);
 
         await Task.WhenAll(producerTask, Task.WhenAll(extractorTasks));
@@ -68,7 +72,7 @@ public class WorkflowService : BackgroundService
         var tasks = new List<Task>();
         for (var i = 0; i < 10; i++)
         {
-            tasks.Add(Task.Run(() => ConsumerTask(), CancellationToken.None));
+            tasks.Add(Task.Run(ConsumerTask, CancellationToken.None));
         }
 
         return tasks;
