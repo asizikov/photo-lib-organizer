@@ -12,6 +12,7 @@
 FROM [photo-organizer-db].[dbo].[PhotoFiles]
 
 
+truncate table [photo-organizer-db].[dbo].[PhotoFiles]
 
 select
 --     [FileName]
@@ -50,3 +51,5 @@ select convert (varchar(max), '<table>') +
                        ).value('.', 'varchar(max)'), 1, 0, ''
                    )
            ) + convert (varchar(max), '</table>')
+
+

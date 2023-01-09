@@ -10,13 +10,15 @@ public class ExtractDataFromFileCommandHandler : IRequestHandler<ExtractDataFrom
     private readonly IFileDataExtractorService fileDataExtractorService;
     private readonly IApplicationDbContext dbContext;
     private readonly ILogger<ExtractDataFromFileCommandHandler> logger;
+    private readonly IMediator mediator;
 
     public ExtractDataFromFileCommandHandler(IFileDataExtractorService fileDataExtractorService,
-        IApplicationDbContext dbContext, ILogger<ExtractDataFromFileCommandHandler> logger)
+        IApplicationDbContext dbContext, ILogger<ExtractDataFromFileCommandHandler> logger, IMediator mediator)
     {
         this.fileDataExtractorService = fileDataExtractorService;
         this.dbContext = dbContext;
         this.logger = logger;
+        this.mediator = mediator;
     }
 
     public async Task<Guid> Handle(ExtractDataFromFileCommand request, CancellationToken cancellationToken)
@@ -24,10 +26,8 @@ public class ExtractDataFromFileCommandHandler : IRequestHandler<ExtractDataFrom
         var file = await fileDataExtractorService.ExtractFileDataAsync(request.FilePath, cancellationToken);
         try
         {
-            dbContext.PhotoFiles.Add(file);
-            await dbContext.SaveChangesAsync(cancellationToken);
-
-            return file.Id;
+            var id = await mediator.Send(new CreateOrUpdateFileCommand { File = file} , cancellationToken);
+            return id;
         }
         catch (Exception ex)
         {
