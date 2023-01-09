@@ -9,7 +9,11 @@
              ,[PhotoTaken]
              ,[FileCreated]
              ,[Hash]
+             , [Latitude]
+            , [Longitude]
+            , [Location]    
 FROM [photo-organizer-db].[dbo].[PhotoFiles]
+where [Latitude] is not null
 
 
 truncate table [photo-organizer-db].[dbo].[PhotoFiles]

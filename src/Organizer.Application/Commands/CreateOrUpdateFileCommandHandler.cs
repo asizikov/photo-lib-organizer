@@ -34,6 +34,9 @@ public class CreateOrUpdateFileCommandHandler : IRequestHandler<CreateOrUpdateFi
             existingFile.PhotoTaken = request.File.PhotoTaken;
             existingFile.FileCreated = request.File.FileCreated;
             existingFile.Hash = request.File.Hash;
+            existingFile.Latitude = request.File.Latitude;
+            existingFile.Longitude = request.File.Longitude;
+            existingFile.Location = request.File.Location;
 
             dbContext.PhotoFiles.Update(existingFile);
         }

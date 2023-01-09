@@ -10,6 +10,7 @@ public class PhotoFileConfiguration : IEntityTypeConfiguration<PhotoFile>
     {
         builder.HasAlternateKey(e => e.FilePath);
         builder.HasIndex(e => e.Hash);
+        builder.HasIndex(e => e.Location);
 
         builder.Property(e => e.Id)
             .HasDefaultValueSql("NEWID()");
@@ -27,5 +28,9 @@ public class PhotoFileConfiguration : IEntityTypeConfiguration<PhotoFile>
             .HasMaxLength(15);
         
         builder.Property(e => e.Hash).HasMaxLength(500);
+        
+        builder.Property(e => e.Longitude).HasColumnType("decimal(9,6)");
+        builder.Property(e => e.Latitude).HasColumnType("decimal(9,6)");
+        builder.Property(e => e.Location).HasMaxLength(500);
     }
 }

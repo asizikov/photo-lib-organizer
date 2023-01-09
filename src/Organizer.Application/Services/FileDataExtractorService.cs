@@ -52,6 +52,15 @@ public class FileDataExtractorService : IFileDataExtractorService
                         photoFileEntity.PhotoTaken = date;
                     }
                 }
+                
+                // Extract location from exif data
+                var gpsDirectory = metadata.OfType<GpsDirectory>().FirstOrDefault();
+                var geoLocation = gpsDirectory?.GetGeoLocation();
+                if (geoLocation is { IsZero: false })
+                {
+                    photoFileEntity.Latitude = geoLocation.Latitude;
+                    photoFileEntity.Longitude = geoLocation.Longitude;
+                }
             }
             catch (Exception ex)
             {
