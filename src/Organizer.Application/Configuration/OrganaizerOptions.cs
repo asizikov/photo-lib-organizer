@@ -4,5 +4,5 @@ public class OrganizerOptions
 {
     public const string Key = "AppConfiguration:OrganizerConfiguration";
 
-    public string DirectoryToProcess { get; set; } = string.Empty;
+    public string[] DirectoriesToProcess { get; set; } = Array.Empty<string>();
 }

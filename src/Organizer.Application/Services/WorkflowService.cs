@@ -30,7 +30,12 @@ public class WorkflowService : BackgroundService
         logger.LogInformation("WorkflowService.RunAsync");
 
         var stopwatch = Stopwatch.StartNew();
-        await mediator.Send(new BuildIndexCommand { SourceDirectory = config.Value.DirectoryToProcess }, stoppingToken);
+        
+        foreach (var sourceDirectory in config.Value.DirectoriesToProcess)
+        {
+            await mediator.Send(new BuildIndexCommand { SourceDirectory = sourceDirectory }, stoppingToken);
+        }
+
         await mediator.Send(new UpdateFileCreatedDatesCommand(), stoppingToken);
 
         logger.LogInformation("WorkflowService.RunAsync: {ElapsedMilliseconds} ms", stopwatch.ElapsedMilliseconds);
