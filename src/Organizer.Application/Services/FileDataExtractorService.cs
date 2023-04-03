@@ -9,11 +9,13 @@ namespace Organizer.Application.Services;
 
 public class FileDataExtractorService : IFileDataExtractorService
 {
+    private readonly IFileNameParser fileNameParser;
     private readonly ILogger<FileDataExtractorService> logger;
     private readonly HashSet<string> knownPhotoExtensions = new();
 
-    public FileDataExtractorService(ILogger<FileDataExtractorService> logger)
+    public FileDataExtractorService(IFileNameParser fileNameParser, ILogger<FileDataExtractorService> logger)
     {
+        this.fileNameParser = fileNameParser;
         this.logger = logger;
         knownPhotoExtensions.Add(".jpg");
         knownPhotoExtensions.Add(".jpeg");
@@ -52,6 +54,14 @@ public class FileDataExtractorService : IFileDataExtractorService
                         photoFileEntity.PhotoTaken = date;
                     }
                 }
+                if (photoFileEntity.PhotoTaken is null)
+                {
+                    photoFileEntity.PhotoTaken = TryExtractDataFromFileName(fileInfo.Name);
+                    if (photoFileEntity.PhotoTaken is null)
+                    {
+                        logger.LogWarning("failed to extract date from file {FilePath}", filePath);
+                    }
+                }
                 
                 // Extract location from exif data
                 var gpsDirectory = metadata.OfType<GpsDirectory>().FirstOrDefault();
@@ -71,6 +81,11 @@ public class FileDataExtractorService : IFileDataExtractorService
         photoFileEntity.Hash = await CalculateFileHashAsync(fileInfo, cancellationToken);
 
         return photoFileEntity;
+    }
+
+    private DateTime? TryExtractDataFromFileName(string fileInfoName)
+    {
+        return fileNameParser.ExtractDateFromFileName(fileInfoName);
     }
 
     private async Task<string?> CalculateFileHashAsync(FileInfo fileInfo, CancellationToken cancellationToken)

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading.Channels;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

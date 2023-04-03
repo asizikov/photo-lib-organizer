@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddPersistence();
 
         services.AddTransient<IFileDataExtractorService, FileDataExtractorService>();
+        services.AddSingleton<IFileNameParser, FileNameParser>();
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.Configure<OrganizerOptions>(contextConfiguration.GetSection(OrganizerOptions.Key));
         return services;

@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dbscripts", "dbscripts", "{
 		dbscripts\find-duplicates.sql = dbscripts\find-duplicates.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{35C9DF54-0888-4BAC-8FEF-8E16727ED4FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoLib.Organizer.Application.Tests", "tests\PhotoLib.Organizer.Application.Tests\PhotoLib.Organizer.Application.Tests.csproj", "{307F2335-852B-4E83-820B-EA0D6E13E5F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +26,7 @@ Global
 		{95E9907D-C752-4E89-AEDC-AF3D6193886D} = {32012170-BC1A-4E60-B0F3-7812823CDEB1}
 		{51A29FF2-293F-41BD-893F-2CE7F4FC0BD1} = {32012170-BC1A-4E60-B0F3-7812823CDEB1}
 		{7DC4750F-E398-4DAC-A92C-C363E2E82FB6} = {32012170-BC1A-4E60-B0F3-7812823CDEB1}
+		{307F2335-852B-4E83-820B-EA0D6E13E5F0} = {35C9DF54-0888-4BAC-8FEF-8E16727ED4FF}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{95E9907D-C752-4E89-AEDC-AF3D6193886D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -36,5 +41,9 @@ Global
 		{7DC4750F-E398-4DAC-A92C-C363E2E82FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DC4750F-E398-4DAC-A92C-C363E2E82FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DC4750F-E398-4DAC-A92C-C363E2E82FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

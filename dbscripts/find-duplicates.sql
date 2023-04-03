@@ -34,7 +34,7 @@ where [Hash] in (
 )
 group by [Hash], [FilePath]
 
-
+-- select files with photo taken is null
 -- format selected rows as html table where each row is an img tag
 
 
