@@ -10,12 +10,13 @@ using Organizer.Application.Services;
 ThreadPool.SetMinThreads(100, 100);
 
 var host = Host.CreateDefaultBuilder(args)
-    .ConfigureAppConfiguration((builder =>
+    .ConfigureAppConfiguration((context, builder) =>
     {
         builder.Sources.Clear();
-        builder.SetBasePath(Directory.GetCurrentDirectory());
-        builder.AddJsonFile("appsettings.json", false, false);
-    }))
+        builder.SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", false, false)
+               .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true);
+    })
     .ConfigureServices((context, services) =>
     {
         services.AddApplication(context.Configuration);
