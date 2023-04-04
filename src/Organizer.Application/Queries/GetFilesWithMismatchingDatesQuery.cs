@@ -21,8 +21,8 @@ public class GetFilesWithMismatchingDatesQueryHandler : IRequestHandler<GetFiles
         this.logger = logger;
     }
 
-    public async Task<IEnumerable<PhotoFile>> Handle(GetFilesWithMismatchingDatesQuery request, CancellationToken cancellationToken)
+    public Task<IEnumerable<PhotoFile>> Handle(GetFilesWithMismatchingDatesQuery request, CancellationToken cancellationToken)
     {
-        return null;
+        return Task.FromResult<IEnumerable<PhotoFile>>(new List<PhotoFile>());
     }
 }

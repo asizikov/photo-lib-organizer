@@ -9,8 +9,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     {
         var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
        // optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=photo-organizer-db;Trusted_Connection=True;Trust Server Certificate=true;MultipleActiveResultSets=true");
-        optionsBuilder.UseSqlServer(@"Server=.\\db,1443;Database=photo-organizer-db;User Id=sa;Password=P@ssw0rd;");
-"
+        optionsBuilder.UseSqlServer(@"Server=localhost,1433;Database=photo-organizer-db;User Id=sa;Password=P@ssw0rd;Trust Server Certificate=true;MultipleActiveResultSets=true;");
         return new ApplicationDbContext(optionsBuilder.Options);
     }
 }

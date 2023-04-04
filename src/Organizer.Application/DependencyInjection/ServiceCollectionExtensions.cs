@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
         IConfiguration contextConfiguration)
     {
         services.AddDomain();
-        services.AddPersistence(contextConfiguration.GetConnectionString("PhotolibOrganizerDb"));
+        services.AddPersistence(contextConfiguration.GetConnectionString("PhotolibOrganizerDb")!);
 
         services.AddTransient<IFileDataExtractorService, FileDataExtractorService>();
         services.AddSingleton<IFileNameParser, FileNameParser>();
