@@ -57,3 +57,16 @@ select convert (varchar(max), '<table>') +
            ) + convert (varchar(max), '</table>')
 
 
+-- select files with FileExtension is .PNG and PhotoTaken is null
+-- format selected rows as html table where each row is an img tag
+select convert(varchar(max),
+                stuff(
+                          (select convert (varchar(max), '<tr><td><img width=300 src="') +
+                                 convert (varchar(max), [FilePath]) +
+                                 convert (varchar(max), '" /></td></tr>')
+                            from [photo-organizer-db].[dbo].[PhotoFiles]
+                            where [FileExtension] = '.PNG' and [PhotoTaken] is null
+                            for xml path(''), type
+                          ).value('.', 'varchar(max)'), 1, 0, ''
+                     )
+              ) + convert (varchar(max), '</table>')

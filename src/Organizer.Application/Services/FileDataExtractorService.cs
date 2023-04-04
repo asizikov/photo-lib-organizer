@@ -20,6 +20,7 @@ public class FileDataExtractorService : IFileDataExtractorService
         knownPhotoExtensions.Add(".jpg");
         knownPhotoExtensions.Add(".jpeg");
         knownPhotoExtensions.Add(".heic");
+        knownPhotoExtensions.Add(".png");
     }
 
     public async Task<PhotoFile> ExtractFileDataAsync(string filePath, CancellationToken cancellationToken)
@@ -54,15 +55,7 @@ public class FileDataExtractorService : IFileDataExtractorService
                         photoFileEntity.PhotoTaken = date;
                     }
                 }
-                if (photoFileEntity.PhotoTaken is null)
-                {
-                    photoFileEntity.PhotoTaken = TryExtractDataFromFileName(fileInfo.Name);
-                    if (photoFileEntity.PhotoTaken is null)
-                    {
-                        logger.LogWarning("failed to extract date from file {FilePath}", filePath);
-                    }
-                }
-                
+
                 // Extract location from exif data
                 var gpsDirectory = metadata.OfType<GpsDirectory>().FirstOrDefault();
                 var geoLocation = gpsDirectory?.GetGeoLocation();
@@ -75,6 +68,15 @@ public class FileDataExtractorService : IFileDataExtractorService
             catch (Exception ex)
             {
                 logger.LogError(ex, "failed to extract metadata for file {FilePath}", filePath);
+            }
+        }
+
+        if (photoFileEntity.PhotoTaken is null)
+        {
+            photoFileEntity.PhotoTaken = TryExtractDataFromFileName(fileInfo.Name);
+            if (photoFileEntity.PhotoTaken is null)
+            {
+                logger.LogWarning("failed to extract date from file {FilePath}", filePath);
             }
         }
 
