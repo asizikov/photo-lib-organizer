@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{35C9DF54
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoLib.Organizer.Application.Tests", "tests\PhotoLib.Organizer.Application.Tests\PhotoLib.Organizer.Application.Tests.csproj", "{307F2335-852B-4E83-820B-EA0D6E13E5F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organizer.Web", "src\Organizer.Web\Organizer.Web.csproj", "{4B1A13D2-8F7F-482E-971C-F1942A47FBA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,7 @@ Global
 		{51A29FF2-293F-41BD-893F-2CE7F4FC0BD1} = {32012170-BC1A-4E60-B0F3-7812823CDEB1}
 		{7DC4750F-E398-4DAC-A92C-C363E2E82FB6} = {32012170-BC1A-4E60-B0F3-7812823CDEB1}
 		{307F2335-852B-4E83-820B-EA0D6E13E5F0} = {35C9DF54-0888-4BAC-8FEF-8E16727ED4FF}
+		{4B1A13D2-8F7F-482E-971C-F1942A47FBA1} = {32012170-BC1A-4E60-B0F3-7812823CDEB1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{95E9907D-C752-4E89-AEDC-AF3D6193886D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -45,5 +48,9 @@ Global
 		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{307F2335-852B-4E83-820B-EA0D6E13E5F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B1A13D2-8F7F-482E-971C-F1942A47FBA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B1A13D2-8F7F-482E-971C-F1942A47FBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B1A13D2-8F7F-482E-971C-F1942A47FBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B1A13D2-8F7F-482E-971C-F1942A47FBA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
