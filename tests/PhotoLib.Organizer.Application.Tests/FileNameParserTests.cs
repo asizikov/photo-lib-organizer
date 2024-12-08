@@ -26,5 +26,6 @@ public class FileNameParserTests
         yield return new object[] { "InstaWeather_o_09_01_23_21-04-2014.JPG", new DateTime(2014, 04, 21,9,1,23) };
         yield return new object[] { "InstaWeather_NW_15_33_30_15-02-2014.JPG", new DateTime(2014, 02, 15,15,33,30) };
         yield return new object[] { "InstaWeather_12_48_00_18-01-2014.JPG", new DateTime(2014, 01, 18,12,48,00) };
+        yield return new object[] { "photo_2020-08-18_22-01-21.jpg", new DateTime(2020, 08, 18,22,01,21) };
     }
 }

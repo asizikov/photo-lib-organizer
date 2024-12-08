@@ -19,7 +19,7 @@ public class UpdateFileCreatedDatesCommandHandler : IRequestHandler<UpdateFileCr
         this.context = context;
     }
     
-    public async Task<Unit> Handle(UpdateFileCreatedDatesCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateFileCreatedDatesCommand request, CancellationToken cancellationToken)
     {
         var channel = Channel.CreateBounded<FileData>(new BoundedChannelOptions(1000)
         {
@@ -33,8 +33,6 @@ public class UpdateFileCreatedDatesCommandHandler : IRequestHandler<UpdateFileCr
         var producerTask = Task.Run(() => ProducerTask(writer, cancellationToken), cancellationToken);
 
         await Task.WhenAll(producerTask, Task.WhenAll(consumerTasks));
-        
-        return Unit.Value;
     }
     
     private async Task ProducerTask(ChannelWriter<FileData> writer, CancellationToken stoppingToken)

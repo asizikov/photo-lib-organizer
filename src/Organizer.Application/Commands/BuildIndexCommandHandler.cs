@@ -15,10 +15,9 @@ public class BuildIndexCommandHandler : IRequestHandler<BuildIndexCommand>
         this.logger = logger;
     }
 
-    public async Task<Unit> Handle(BuildIndexCommand request, CancellationToken cancellationToken)
+    public async Task Handle(BuildIndexCommand request, CancellationToken cancellationToken)
     {
         await StartReadingFilesAsync(request.SourceDirectory, cancellationToken);
-        return Unit.Value;
     }
 
     private async Task StartReadingFilesAsync(string sourceDirectory, CancellationToken stoppingToken)

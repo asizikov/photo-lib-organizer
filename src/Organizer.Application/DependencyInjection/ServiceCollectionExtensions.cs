@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using MediatR;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Organizer.Application.Configuration;
 using Organizer.Application.Services;
@@ -19,7 +17,7 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<IFileDataExtractorService, FileDataExtractorService>();
         services.AddSingleton<IFileNameParser, FileNameParser>();
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(typeof(Program).Assembly); });
         services.Configure<OrganizerOptions>(contextConfiguration.GetSection(OrganizerOptions.Key));
         return services;
     }
