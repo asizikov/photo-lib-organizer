@@ -8,9 +8,9 @@ There are a few things that it does at the moment:
 * Detects duplicates based on hash value and build an html page for me to review
 * Updates file created dates to photo taken date when mismatch is detected
 
-## Tech sctack
+## Tech stack
 
-* .NET 7
+* .NET 10
 * MS SQL
 
 ## Plans

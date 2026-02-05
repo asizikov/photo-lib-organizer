@@ -58,8 +58,7 @@ public class FileDataExtractorService : IFileDataExtractorService
 
                 // Extract location from exif data
                 var gpsDirectory = metadata.OfType<GpsDirectory>().FirstOrDefault();
-                var geoLocation = gpsDirectory?.GetGeoLocation();
-                if (geoLocation is { IsZero: false })
+                if (gpsDirectory is not null && gpsDirectory.TryGetGeoLocation(out var geoLocation) && !geoLocation.IsZero)
                 {
                     photoFileEntity.Latitude = geoLocation.Latitude;
                     photoFileEntity.Longitude = geoLocation.Longitude;
